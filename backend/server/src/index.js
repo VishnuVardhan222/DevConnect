@@ -5,12 +5,15 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
+const auth = require('./middleware/authMiddleware');
 
 const app = express();
 
 app.use(express.json());
-app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173'}))
+app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173'}));
 
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
 app.get('/', (req, res) => res.send('DevConnect API is running...'));
