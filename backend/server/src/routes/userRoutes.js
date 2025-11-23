@@ -1,5 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
+const Post = require('../models/Post');
+const auth = require('../middleware/authMiddleware');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
@@ -32,7 +34,11 @@ router.get('/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if(!user) return res.status(404).json({ message: 'User not found' });
-        res.json(user);
+
+        const posts = await Post.find({ user: req.params.id })
+        .populate("user","name email").sort({ createdAt: -1 });
+
+        res.json(user, posts);
     } catch(err) {
         console.log(err);
         res.status(500).json({ message: 'Server Error' });

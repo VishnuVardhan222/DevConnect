@@ -6,6 +6,7 @@ const cors = require('cors');
 
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
+const postRoutes = require('./routes/postRoutes');
 const auth = require('./middleware/authMiddleware');
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(cors({ origin: process.env.CLIENT_URL || 'http://localhost:5173'}));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/posts', postRoutes);
 
 app.get('/', (req, res) => res.send('DevConnect API is running...'));
 
